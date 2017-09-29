@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
 // @description  Little overlay for BombParty
-// @downloadURL  https://github.com/SuperRandomGuy/Bombparty/edit/master/BP%20Little%20Overlay.user.js
+// @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
 // @match        http://bombparty.sparklinlabs.com/play/*
 // @grant        none
