@@ -11,42 +11,18 @@
 
 (function() {
     'use strict';
-    function createInLine(parent,newThingType,simpleType){
-    var line = document.createElement('sim');
-    var thing = document.createElement(newThingType);
-    parent.appendChild(thing);
-    return thing;
-}
- var runOverlay = setInterval(function getData(){if(typeof channel.data !== 'undefined'){
-
-var TimeShown = "";
-var parentThing = document.getElementById("SidebarTabButtons");
-var ButtonText1 = createInLine(parentThing,'button');
-if(channel.data.state == "playing"){
-ButtonText1.innerHTML = 'En attente de la prochaine partie'+TimeShown;
-} else {
-ButtonText1.innerHTML = 'Partie non commencée'+TimeShown;
-}
-parentThing = document.getElementById("AppsBar");
-var ButtonText2 = createInLine(parentThing,'p',"active","TimerID");
-ButtonText2.innerHTML = "A(0)";
-ButtonText2.align = "center";
-ButtonText2.style.color = "#a0a0a0";
- var option = document.createElement('tr');
+    function loadSettingsOverlay(){
+        var option = document.createElement('tr');
  var optionName = document.createElement('td');
  optionName.style.background = "rgb(118, 118, 118);";
+ optionName.setAttribute('id','optionDetect');
 optionName.innerHTML = "Changer de fond";
  var optionSet  = document.createElement('input');
- 
+
  optionSet.setAttribute('type','text');
  option.appendChild(optionName);
  option.appendChild(optionSet);
- function UpdateBgAction(){
-     var bgLink = "url("+optionSet.value+")";
-     document.getElementById("GameCanvas").style.setProperty("background",bgLink);
-     console.log("Changement du fond d'écran : "+optionSet.value);
-     optionSet.value = "";
- }
+
  optionSet.onkeypress = function(e){
     if (!e) e = window.event;
     var keyCode = e.keyCode || e.which;
@@ -57,29 +33,7 @@ optionName.innerHTML = "Changer de fond";
   };
  document.getElementById('SettingsTab').children[1].children[0].appendChild(option);
      document.getElementById("GameCanvas").style.setProperty("background","url(https://media.giphy.com/media/EIyuzZk6IDUMU/source.gif)");
-
-var anim1 = [
-    { transform: 'scale(1.2)' },
-    { transform: 'scale(1.5)' }
-  ];
-var anim2 = {
-    duration: 200,
-    easing: 'ease-in-out',
-    fill: 'both'
-  };
-var anim3 = [
-    { transform: 'scale(1.5)' },
-    { transform: 'scale(1.2)' }
-  ];
-var anim4 = {
-    duration: 150,
-    easing: 'ease-in-out',
-    fill: 'both'
-  };
-var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
- var elem = document.getElementById('SidebarTabButtons');
- elem.removeChild(elem.children[2]);
- var notificationSelect = document.createElement('select');
+var notificationSelect = document.createElement('select');
  var optionActive = document.createElement('option');
  optionActive.innerHTML = "Activé";
  var optionDisActive = document.createElement('option');
@@ -106,6 +60,111 @@ var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
         }
     }
  });
+        var PlayerListTab = document.createElement("table");
+var PlayerListTitle = document.createElement("h2");
+var PlayerListBody = document.createElement("tbody");
+PlayerListTitle.innerHTML = "Joueurs";
+document.getElementById('SettingsTab').appendChild(PlayerListTitle);
+var UpdatePlayerList = setInterval(function(){
+    while(PlayerListBody.firstChild){
+     PlayerListBody.removeChild(PlayerListBody.firstChild);
+    }
+    channel.data.users.forEach(function (player){
+        var PlayerTr = document.createElement('tr');
+        var PlayerName = document.createElement('td');
+        PlayerName.innerHTML = player.displayName;
+        PlayerTr.appendChild(PlayerName);
+        if(window.app.user.role !== ""){
+            if(player.authId !== window.app.user.authId){
+            if(window.app.user.role == "host"){
+            var ModButton = document.createElement('button');
+            ModButton.innerHTML = "Mod ";
+            ModButton.style.color = '#3dff00';
+            ModButton.addEventListener('click',function mod(){channel.socket.emit("modUser",{displayName:player.displayName,authId:player.authId});});
+            PlayerTr.appendChild(ModButton);
+            if(player.role === "moderator"){
+                var unModButton = document.createElement('button');
+                unModButton.innerHTML = "unMod ";
+                unModButton.style.color = "#de4";
+                unModButton.addEventListener('click',function mod(){channel.socket.emit("unmodUser",player.authId);});
+                PlayerTr.appendChild(unModButton);
+            }
+            }
+                if(player.role === ""){
+            var BanButton = document.createElement('button');
+            BanButton.innerHTML = "Bannir ";
+            BanButton.style.color = "#a00";
+            BanButton.addEventListener('click',function ban(){channel.socket.emit("banUser",{displayName:player.displayName,authId:player.authId});});
+            PlayerTr.appendChild(BanButton);
+                }
+        } else {
+         var YouInfo = document.createElement('button');
+            YouInfo.innerHTML = "Vous";
+            PlayerTr.appendChild(YouInfo);
+        }
+        }
+        PlayerListBody.appendChild(PlayerTr);
+    });
+},500);
+PlayerListTab.appendChild(PlayerListBody);
+document.getElementById('SettingsTab').appendChild(PlayerListTab);
+    }
+    function UpdateBgAction(){
+     var bgLink = "url("+optionSet.value+")";
+     document.getElementById("GameCanvas").style.setProperty("background",bgLink);
+     console.log("Changement du fond d'écran : "+optionSet.value);
+     optionSet.value = "";
+ }
+    function createInLine(parent,newThingType,simpleType){
+    var line = document.createElement('sim');
+    var thing = document.createElement(newThingType);
+    parent.appendChild(thing);
+    return thing;
+}
+ var runOverlay = setInterval(function getData(){if(typeof channel.data !== 'undefined'){
+clearInterval(runOverlay);
+
+var TimeShown = "";
+var parentThing = document.getElementById("SidebarTabButtons");
+var ButtonText1 = createInLine(parentThing,'button');
+if(channel.data.state == "playing"){
+ButtonText1.innerHTML = 'En attente de la prochaine partie'+TimeShown;
+} else {
+ButtonText1.innerHTML = 'Partie non commencée'+TimeShown;
+}
+parentThing = document.getElementById("AppsBar");
+var ButtonText2 = createInLine(parentThing,'p',"active","TimerID");
+ButtonText2.innerHTML = "A(0)";
+ButtonText2.align = "center";
+ButtonText2.style.color = "#a0a0a0";
+var DetectSetUserRole = setInterval(function detect(){
+    if(document.getElementById('optionDetect')){
+       } else {
+           loadSettingsOverlay();
+       }
+},100);
+var anim1 = [
+    { transform: 'scale(1.2)' },
+    { transform: 'scale(1.5)' }
+  ];
+var anim2 = {
+    duration: 200,
+    easing: 'ease-in-out',
+    fill: 'both'
+  };
+var anim3 = [
+    { transform: 'scale(1.5)' },
+    { transform: 'scale(1.2)' }
+  ];
+var anim4 = {
+    duration: 150,
+    easing: 'ease-in-out',
+    fill: 'both'
+  };
+var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+ var elem = document.getElementById('SidebarTabButtons');
+ elem.removeChild(elem.children[2]);
+ 
 app.user.alphaLetter = "a";
 app.user.alphaNumber = 0;
 app.user.alphaIdx = 0;
@@ -129,6 +188,7 @@ channel.socket.on("winWord",function (acteur){
      }
    }
 });
+
 var Interval;
 var Hour = 0;
 var Minute = 0;
@@ -166,6 +226,5 @@ channel.socket.on("resetBombTimer",function reset(){
 	},1000);
 	}
 });
-clearInterval(runOverlay);
 }},1);
 })();
