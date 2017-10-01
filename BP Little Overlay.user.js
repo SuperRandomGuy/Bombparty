@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -92,14 +92,18 @@ var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
  notificationZone.appendChild(notificationText);
  notificationZone.appendChild(notificationSelect);
  document.getElementById('SettingsTab').children[1].children[0].appendChild(notificationZone);
+ var notifIndicator = document.createElement('span');
+     notifIndicator.innerHTML = " ➤";
+     notifIndicator.style.color = '#3dff00';
+     notifIndicator.setAttribute('title','Ce joueur vous a notifié dans son message');
  var sound = new Audio("http://bombparty.sparklinlabs.com/sounds/myTurn.wav");
  channel.socket.on('chatMessage',function parse(data){
      var message = data.text;
     if(notificationSelect.selectedIndex === 0){
         if(message.toLowerCase().indexOf(window.app.user.displayName.toLowerCase()) !== -1){
            sound.play();
-            document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].children[0].setAttribute('class','UserRole_hubAdministrator');
-          }
+           document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].appendChild(notifIndicator);
+        }
     }
  });
 app.user.alphaLetter = "a";
@@ -165,4 +169,3 @@ channel.socket.on("resetBombTimer",function reset(){
 clearInterval(runOverlay);
 }},1);
 })();
-
