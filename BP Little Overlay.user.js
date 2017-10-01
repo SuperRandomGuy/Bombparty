@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.1
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -46,17 +46,17 @@ var notificationSelect = document.createElement('select');
  notificationZone.appendChild(notificationText);
  notificationZone.appendChild(notificationSelect);
  document.getElementById('SettingsTab').children[1].children[0].appendChild(notificationZone);
- var notifIndicator = document.createElement('span');
-     notifIndicator.innerHTML = " ❯";
-     notifIndicator.style.color = '#3dff00';
-     notifIndicator.setAttribute('title','Ce joueur vous a notifié dans son message');
  var sound = new Audio("http://bombparty.sparklinlabs.com/sounds/myTurn.wav");
  channel.socket.on('chatMessage',function parse(data){
      var message = data.text;
-    if(notificationSelect.selectedIndex === 0){
-        if(message.toLowerCase().indexOf(window.app.user.displayName.toLowerCase()) !== -1){
-           sound.play();
+       if(message.toLowerCase().indexOf(window.app.user.displayName.toLowerCase()) !== -1){
+           var notifIndicator = document.createElement('span');
+     notifIndicator.innerHTML = " ❯";
+     notifIndicator.style.color = '#3dff00';
+     notifIndicator.setAttribute('title','Ce joueur vous a notifié dans son message');
            document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].appendChild(notifIndicator);
+           if(notificationSelect.selectedIndex === 0){
+               sound.play();
         }
     }
  });
@@ -71,17 +71,41 @@ var UpdatePlayerList = setInterval(function(){
     }
     channel.data.users.forEach(function (player){
         var PlayerTr = document.createElement('tr');
-        var PlayerName = document.createElement('td');
-        PlayerName.innerHTML = player.displayName;
+        var PlayerName = document.createElement('span');
+        var PlayerRole = document.createElement('span');
+        if(player.role == "moderator"){
+            PlayerRole.innerHTML = '●';
+            PlayerRole.style.color = "#346192";
+        }
+        if(player.role == "administrator"){
+            PlayerRole.innerHTML = '☆';
+            PlayerRole.style.color = "#dc8";
+        }
+        if(player.role == "host"){
+            PlayerRole.innerHTML = '★';
+            PlayerRole.style.color = "#dc8";
+        }
+        if(player.role == "hubAdministrator"){
+            PlayerRole.innerHTML = '[★]';
+            PlayerRole.style.color = "#c63";
+        }
+
+        var Name = document.createElement('span');
+        Name.innerText = player.displayName;
+        Name.style.color = '#ffffff';
+        PlayerRole.appendChild(Name);
+        PlayerName.appendChild(PlayerRole);
         PlayerTr.appendChild(PlayerName);
         if(window.app.user.role !== ""){
             if(player.authId !== window.app.user.authId){
             if(window.app.user.role == "host"){
+                if(player.role !== "moderator"){
             var ModButton = document.createElement('button');
             ModButton.innerHTML = "Mod ";
             ModButton.style.color = '#3dff00';
             ModButton.addEventListener('click',function mod(){channel.socket.emit("modUser",{displayName:player.displayName,authId:player.authId});});
             PlayerTr.appendChild(ModButton);
+            }
             if(player.role === "moderator"){
                 var unModButton = document.createElement('button');
                 unModButton.innerHTML = "unMod ";
@@ -97,10 +121,6 @@ var UpdatePlayerList = setInterval(function(){
             BanButton.addEventListener('click',function ban(){channel.socket.emit("banUser",{displayName:player.displayName,authId:player.authId});});
             PlayerTr.appendChild(BanButton);
                 }
-        } else {
-         var YouInfo = document.createElement('button');
-            YouInfo.innerHTML = "Vous ";
-            PlayerTr.appendChild(YouInfo);
         }
         }
         PlayerListBody.appendChild(PlayerTr);
