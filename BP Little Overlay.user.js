@@ -99,7 +99,7 @@ var UpdatePlayerList = setInterval(function(){
                 }
         } else {
          var YouInfo = document.createElement('button');
-            YouInfo.innerHTML = "Vous";
+            YouInfo.innerHTML = "Vous ";
             PlayerTr.appendChild(YouInfo);
         }
         }
