@@ -144,7 +144,7 @@ var UpdatePlayerList = setInterval(function(){
     });
       var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
         if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
-         lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus modérateur");
+         lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus Modérateur.");
         }
 },1000);
 PlayerListTab.appendChild(PlayerListBody);
