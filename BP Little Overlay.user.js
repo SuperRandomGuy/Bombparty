@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.3
+// @version      1.2.4
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -151,10 +151,10 @@ PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
     function UpdateBgAction(){
-     var bgLink = "url("+optionSet.value+")";
+     var bgLink = "url("+document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value+")";
      document.getElementById("GameCanvas").style.setProperty("background",bgLink);
-     console.log("Changement du fond d'écran : "+optionSet.value);
-     optionSet.value = "";
+     console.log("Changement du fond d'écran : "+document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value);
+     document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value = "";
  }
     function createInLine(parent,newThingType,simpleType){
     var line = document.createElement('sim');
