@@ -44,6 +44,7 @@ var notificationSelect = document.createElement('select');
  var notificationZone = document.createElement('tr');
  var notificationText = document.createElement('td');
  notificationText.innerHTML = "Bruit des notifications";
+ notificationText.setAttribute('title',"Emet un son lorsque quelqu'un envoie un message comportant votre pseudo");
  notificationZone.appendChild(notificationText);
  notificationZone.appendChild(notificationSelect);
  document.getElementById('SettingsTab').children[1].children[0].appendChild(notificationZone);
@@ -60,6 +61,7 @@ var notificationSelect = document.createElement('select');
                sound.play();
         }
     }
+
  });
         var PlayerListTab = document.createElement("table");
 var PlayerListTitle = document.createElement("h2");
@@ -72,7 +74,7 @@ var UpdatePlayerList = setInterval(function(){
     }
     channel.data.users.forEach(function (player){
         var PlayerTr = document.createElement('tr');
-        var PlayerName = document.createElement('span');
+        var PlayerName = document.createElement('td');
         var PlayerRole = document.createElement('span');
         if(player.role == "moderator"){
             PlayerRole.innerHTML = '●';
@@ -92,7 +94,13 @@ var UpdatePlayerList = setInterval(function(){
         }
 
         var Name = document.createElement('span');
-        Name.innerText = player.displayName;
+        if(player.displayName.length < 20){
+            Name.innerText = player.displayName;
+        } else {
+            Name.innerText = player.displayName.substring(0,17)+"...";
+            Name.title = player.displayName;
+
+        }
         Name.style.color = '#eee';
         PlayerRole.appendChild(Name);
         PlayerName.appendChild(PlayerRole);
@@ -124,9 +132,21 @@ var UpdatePlayerList = setInterval(function(){
                 }
         }
         }
-        PlayerListBody.appendChild(PlayerTr);
+        if(player.role === ""){
+            PlayerListBody.appendChild(PlayerTr);
+        } else {
+            if(player.role === "hubAdministrator"){
+            PlayerListBody.insertBefore(PlayerTr,PlayerListBody.children[0]);
+            } else {
+            PlayerListBody.insertBefore(PlayerTr,PlayerListBody.children[1]);
+            }
+        }
     });
-},500);
+      var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
+        if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
+         lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus modérateur");
+        }
+},1000);
 PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
@@ -215,7 +235,7 @@ var Hour = 0;
 var Minute = 0;
 var Second = 0;
 var Totaltime = 0;
-var beginning = 0;
+var beginning = 1;
 var SecondShown = "";
 var MinuteShown = "";
 var HourShown = "";
