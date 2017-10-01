@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.0.1
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -11,13 +11,14 @@
 
 (function() {
     'use strict';
- setTimeout(function load()
-{    function createInLine(parent,newThingType,simpleType){
+    function createInLine(parent,newThingType,simpleType){
     var line = document.createElement('sim');
     var thing = document.createElement(newThingType);
     parent.appendChild(thing);
     return thing;
 }
+ var runOverlay = setInterval(function getData(){if(typeof channel.data !== 'undefined'){
+
 var TimeShown = "";
 var parentThing = document.getElementById("SidebarTabButtons");
 var ButtonText1 = createInLine(parentThing,'button');
@@ -97,6 +98,7 @@ var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
     if(notificationSelect.selectedIndex === 0){
         if(message.toLowerCase().indexOf(window.app.user.displayName.toLowerCase()) !== -1){
            sound.play();
+            document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].children[0].setAttribute('class','UserRole_hubAdministrator');
           }
     }
  });
@@ -160,5 +162,7 @@ channel.socket.on("resetBombTimer",function reset(){
 	},1000);
 	}
 });
-},2000);
+clearInterval(runOverlay);
+}},1);
 })();
+
