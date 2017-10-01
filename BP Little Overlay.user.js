@@ -17,6 +17,7 @@
  optionName.style.background = "rgb(118, 118, 118);";
  optionName.setAttribute('id','optionDetect');
 optionName.innerHTML = "Changer de fond";
+optionName.setAttribute('title',"Mettez un lien  vers une image ou un gif, les dimensions de votre image peuvent mener à des répétitions de l'image en question sur le fond");
  var optionSet  = document.createElement('input');
 
  optionSet.setAttribute('type','text');
