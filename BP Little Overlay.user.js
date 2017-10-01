@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.2.2
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -64,7 +64,7 @@ var notificationSelect = document.createElement('select');
 var PlayerListTitle = document.createElement("h2");
 var PlayerListBody = document.createElement("tbody");
 PlayerListTitle.innerHTML = "Joueurs";
-document.getElementById('SettingsTab').appendChild(PlayerListTitle);
+document.getElementById('SettingsTab').insertBefore(PlayerListTitle,document.getElementById('SettingsTab').children[2]);
 var UpdatePlayerList = setInterval(function(){
     while(PlayerListBody.firstChild){
      PlayerListBody.removeChild(PlayerListBody.firstChild);
@@ -92,7 +92,7 @@ var UpdatePlayerList = setInterval(function(){
 
         var Name = document.createElement('span');
         Name.innerText = player.displayName;
-        Name.style.color = '#ffffff';
+        Name.style.color = '#eee';
         PlayerRole.appendChild(Name);
         PlayerName.appendChild(PlayerRole);
         PlayerTr.appendChild(PlayerName);
@@ -127,7 +127,7 @@ var UpdatePlayerList = setInterval(function(){
     });
 },500);
 PlayerListTab.appendChild(PlayerListBody);
-document.getElementById('SettingsTab').appendChild(PlayerListTab);
+document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
     function UpdateBgAction(){
      var bgLink = "url("+optionSet.value+")";
