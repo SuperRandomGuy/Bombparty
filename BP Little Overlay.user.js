@@ -93,7 +93,7 @@ var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
  notificationZone.appendChild(notificationSelect);
  document.getElementById('SettingsTab').children[1].children[0].appendChild(notificationZone);
  var notifIndicator = document.createElement('span');
-     notifIndicator.innerHTML = " ➤";
+     notifIndicator.innerHTML = " ❯";
      notifIndicator.style.color = '#3dff00';
      notifIndicator.setAttribute('title','Ce joueur vous a notifié dans son message');
  var sound = new Audio("http://bombparty.sparklinlabs.com/sounds/myTurn.wav");
