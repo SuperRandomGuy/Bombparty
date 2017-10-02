@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.61
+// @version      1.2.62
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -160,12 +160,14 @@ var UpdatePlayerList = setInterval(function(){
             }
         }
     });
-      var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
+},1000);
+var fastInterval = setInterval(function up2(){
+     var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
         if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
          lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus Modérateur.");
         }
     $('.Actions').remove();
-},1000);
+},1);
 PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
