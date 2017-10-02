@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.62
+// @version      1.2.63
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -17,6 +17,10 @@
         document.head.appendChild(script);
     channel.refreshAds = function nothing(){};
     function loadSettingsOverlay(){
+        document.getElementById('JoinGameButton').style.background = "#444";
+document.getElementById('JoinGameButton').style.border = "none";
+document.getElementById('JoinGameButton').style.color = "#fff";
+document.getElementById('JoinGameButton').style.font = "inherit";
         var option = document.createElement('tr');
  var optionName = document.createElement('td');
  optionName.style.background = "rgb(118, 118, 118);";
@@ -71,7 +75,7 @@ var notificationSelect = document.createElement('select');
         var PlayerListTab = document.createElement("table");
 var PlayerListTitle = document.createElement("h2");
 var PlayerListBody = document.createElement("tbody");
-PlayerListTitle.innerHTML = "Joueurs";
+PlayerListTitle.innerHTML = "Joueurs dans le salon";
 document.getElementById('SettingsTab').insertBefore(PlayerListTitle,document.getElementById('SettingsTab').children[2]);
 var UpdatePlayerList = setInterval(function(){
     while(PlayerListBody.firstChild){
@@ -160,14 +164,12 @@ var UpdatePlayerList = setInterval(function(){
             }
         }
     });
-},1000);
-var fastInterval = setInterval(function up2(){
-     var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
+      var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
         if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
          lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus Modérateur.");
         }
     $('.Actions').remove();
-},1);
+},1000);
 PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
