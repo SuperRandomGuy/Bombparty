@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.4
+// @version      1.2.5
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -104,31 +104,44 @@ var UpdatePlayerList = setInterval(function(){
         Name.style.color = '#eee';
         PlayerRole.appendChild(Name);
         PlayerName.appendChild(PlayerRole);
+        var Carac = player.displayName*2;
+        if(Carac<40){
+            PlayerName.style.width = Carac.toString()+"%";
+        } else {
+            PlayerName.style.width = "40%";
+        }
         PlayerTr.appendChild(PlayerName);
         if(window.app.user.role !== ""){
             if(player.authId !== window.app.user.authId){
             if(window.app.user.role == "host"){
                 if(player.role !== "moderator"){
-            var ModButton = document.createElement('button');
-            ModButton.innerHTML = "Mod ";
-            ModButton.style.color = '#3dff00';
-            ModButton.addEventListener('click',function mod(){channel.socket.emit("modUser",{displayName:player.displayName,authId:player.authId});});
-            PlayerTr.appendChild(ModButton);
+                    var ModButton = document.createElement('button');
+                    ModButton.innerHTML = "Mod ";
+                    ModButton.style.fontSize ="12px";
+                    ModButton.style.color = '#3dff00';
+                    ModButton.style.background = "#565454";
+                    ModButton.style.width = "20%";
+                    ModButton.addEventListener('click',function mod(){channel.socket.emit("modUser",{displayName:player.displayName,authId:player.authId});});
+                    PlayerTr.appendChild(ModButton);
             }
             if(player.role === "moderator"){
                 var unModButton = document.createElement('button');
                 unModButton.innerHTML = "unMod ";
+                unModButton.style.fontSize = "12px";
                 unModButton.style.color = "#de4";
+                unModButton.style.width = "40%";
                 unModButton.addEventListener('click',function mod(){channel.socket.emit("unmodUser",player.authId);});
                 PlayerTr.appendChild(unModButton);
             }
             }
                 if(player.role === ""){
             var BanButton = document.createElement('button');
-            BanButton.innerHTML = "Bannir ";
-            BanButton.style.color = "#a00";
-            BanButton.addEventListener('click',function ban(){channel.socket.emit("banUser",{displayName:player.displayName,authId:player.authId});});
-            PlayerTr.appendChild(BanButton);
+                    BanButton.innerHTML = "Bannir ";
+                    BanButton.style.fontSize ="12px";
+                    BanButton.style.width = "25%";
+                    BanButton.style.color = "#a00";
+                    BanButton.addEventListener('click',function ban(){channel.socket.emit("banUser",{displayName:player.displayName,authId:player.authId});});
+                    PlayerTr.appendChild(BanButton);
                 }
         }
         }
