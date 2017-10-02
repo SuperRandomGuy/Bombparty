@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2.6
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -61,7 +61,9 @@ var notificationSelect = document.createElement('select');
                sound.play();
         }
     }
-
+     if(app.user.role !== ""){
+         document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].removeChild(document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].children[1]);
+     }
  });
         var PlayerListTab = document.createElement("table");
 var PlayerListTitle = document.createElement("h2");
