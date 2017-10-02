@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.6
+// @version      1.2.61
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -11,6 +11,11 @@
 
 (function() {
     'use strict';
+    var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://code.jquery.com/jquery-3.2.1.min.js";
+        document.head.appendChild(script);
+    channel.refreshAds = function nothing(){};
     function loadSettingsOverlay(){
         var option = document.createElement('tr');
  var optionName = document.createElement('td');
@@ -61,9 +66,7 @@ var notificationSelect = document.createElement('select');
                sound.play();
         }
     }
-     if(app.user.role !== ""){
-         document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].removeChild(document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1].children[1].children[1]);
-     }
+     $('.Actions').remove();
  });
         var PlayerListTab = document.createElement("table");
 var PlayerListTitle = document.createElement("h2");
@@ -161,6 +164,7 @@ var UpdatePlayerList = setInterval(function(){
         if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
          lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus Modérateur.");
         }
+    $('.Actions').remove();
 },1000);
 PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
