@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.2.63
+// @version      1.3.01
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -15,12 +15,16 @@
         script.type = 'text/javascript';
         script.src = "https://code.jquery.com/jquery-3.2.1.min.js";
         document.head.appendChild(script);
+    var css = document.createElement('link');
+        css.setAttribute('rel','stylesheet');
+        css.setAttribute('href','https://dl.dropboxusercontent.com/s/k0hr9che8alv3mc/style.css?dl=0');
+        document.children[0].children[0].appendChild(css);
     channel.refreshAds = function nothing(){};
     function loadSettingsOverlay(){
-        document.getElementById('JoinGameButton').style.background = "#444";
-document.getElementById('JoinGameButton').style.border = "none";
-document.getElementById('JoinGameButton').style.color = "#fff";
-document.getElementById('JoinGameButton').style.font = "inherit";
+        var script2 = document.createElement('script');
+        script2.type = 'text/javascript';
+        script2.src = "https://dl.dropboxusercontent.com/s/664bb5kx3ejutle/ScriptOverlay.js?dl=0";
+        document.head.appendChild(script2);
         var option = document.createElement('tr');
  var optionName = document.createElement('td');
  optionName.style.background = "rgb(118, 118, 118);";
@@ -75,7 +79,7 @@ var notificationSelect = document.createElement('select');
         var PlayerListTab = document.createElement("table");
 var PlayerListTitle = document.createElement("h2");
 var PlayerListBody = document.createElement("tbody");
-PlayerListTitle.innerHTML = "Joueurs dans le salon";
+PlayerListTitle.innerHTML = "Joueurs";
 document.getElementById('SettingsTab').insertBefore(PlayerListTitle,document.getElementById('SettingsTab').children[2]);
 var UpdatePlayerList = setInterval(function(){
     while(PlayerListBody.firstChild){
@@ -164,10 +168,6 @@ var UpdatePlayerList = setInterval(function(){
             }
         }
     });
-      var lastLog = document.getElementById('ChatLog').children[document.getElementById('ChatLog').children.length-1];
-        if(lastLog !== undefined && lastLog.innerHTML.indexOf("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..") != -1){
-         lastLog.innerHTML = lastLog.innerHTML.replace("est maintenant key 'nuclearnode:userRoles. (fr)' returned an object instead of string..","n'est plus Modérateur.");
-        }
     $('.Actions').remove();
 },1000);
 PlayerListTab.appendChild(PlayerListBody);
