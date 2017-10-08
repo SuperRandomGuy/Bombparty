@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Long Word Stats
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       You
 // @match        http://bombparty.sparklinlabs.com/play/*
@@ -26,7 +26,7 @@
     TableBody.appendChild(LongNumber);
     var LastLong = document.createElement('button');
     LastLong.setAttribute('id','LongNumberLine');
-    LastLong.innerHTML = "aucun";
+    LastLong.innerHTML = "*";
     TableBody.appendChild(LastLong);
     app.user.long = 0;
     var myTurn = 0;
