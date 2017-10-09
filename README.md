@@ -5,4 +5,5 @@ Mini overlay :
 Long Word Stats : 
 [TamperMonkey](https://github.com/SuperRandomGuy/Bombparty/raw/master/BP%20Long%20Word.user.js)
 ---------------------------
-
+BP Helper (need password) :
+[TamperMonkey](https://github.com/SuperRandomGuy/Bombparty/raw/master/BP%20Helper.user.js)
