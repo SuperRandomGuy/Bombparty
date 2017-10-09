@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Long Word Stats
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.21
 // @description  try to take over the world!
 // @author       You
 // @match        http://bombparty.sparklinlabs.com/play/*
@@ -30,27 +30,34 @@
     TableBody.appendChild(LastLong);
     app.user.long = 0;
     var myTurn = 0;
-    var Timer;
     var Time;
+    var TimeS;
+    var TimeM;
+    var ShownTime;
     setTimeout(function loadLongOver(){
     channel.socket.on('setActivePlayerIndex',function(){
         if(channel.data.actors[channel.data.activePlayerIndex].authId == app.user.authId  && myTurn ===0){
             myTurn = 1;
-            Time = 0;
-            Timer = setInterval(function count(){
-                Time = Time+10;
-            },10);
+            Time = new Date();
+            TimeS = Time.getSeconds();
+            TimeM = Time.getMilliseconds();
+            ShownTime = TimeS+TimeM/1000;
         }
     });
     channel.socket.on('winWord',function(acteur){
         var lastMot = channel.data.actorsByAuthId[acteur.playerAuthId].lastWord.toUpperCase();
         myTurn = 0;
-        clearTimeout(Timer);
         if(acteur.playerAuthId == app.user.authId && lastMot.length>19){
             app.user.long++;
-            var sec = Time/1000;
+            Time = new Date();
+            TimeS = Time.getSeconds();
+            TimeM = Time.getMilliseconds();
+            ShownTime = Math.round(((TimeS+TimeM/1000)-ShownTime)*1000)/1000;
+            if(ShownTime<0){
+                ShownTime = ShownTime+60;
+            }
             LongNumber.innerHTML = "Nombre de longs : "+app.user.long;
-            LastLong.innerHTML = lastMot.toLowerCase()+" ("+sec.toString()+"s)";
+            LastLong.innerHTML = lastMot.toLowerCase()+" ("+ShownTime.toString()+"s)";
         }
     });
     channel.socket.on('endGame',function(){
