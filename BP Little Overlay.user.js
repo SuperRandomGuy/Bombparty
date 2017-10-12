@@ -46,7 +46,7 @@ optionName.setAttribute('title',"Mettez un lien  vers une image ou un gif, les d
     }
   };
  document.getElementById('SettingsTab').children[1].children[0].appendChild(option);
-     document.getElementById("GameCanvas").style.setProperty("background","url(https://media.giphy.com/media/EIyuzZk6IDUMU/source.gif)");
+     document.getElementById("GameCanvas").style.setProperty("background","url(https://i.imgur.com/KwnCoKk.gif)");
 var notificationSelect = document.createElement('select');
  var optionActive = document.createElement('option');
  optionActive.innerHTML = "Activé";
