@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BP Little Overlay
 // @namespace    http://tampermonkey.net/
-// @version      1.3.02
+// @version      1.4.01
 // @description  Little overlay for BombParty
 // @downloadURL  https://github.com/SuperRandomGuy/Bombparty/blob/master/BP%20Little%20Overlay.user.js
 // @author       Nicroc
@@ -174,8 +174,81 @@ PlayerListTab.appendChild(PlayerListBody);
 document.getElementById('SettingsTab').insertBefore(PlayerListTab,document.getElementById('SettingsTab').children[3]);
     }
     function UpdateBgAction(){
+        if(document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value.length == 6 || document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value.length == 7){
+            var colorB = document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value;
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+var compl = hexToRgb(colorB)
+var complC = 'rgb('+(compl.r-20).toString()+','+(compl.g-50).toString()+','+(compl.b-100).toString()+')'
+document.getElementById("App").style.setProperty("background",'#'+colorB);
+document.getElementById("ChatLog").style.setProperty("background",complC);
+document.getElementById("AppsBar").style.setProperty("background",complC);
+document.getElementById("SettingsTab").style.setProperty("background",complC);
+var complD = 'rgb('+(compl.r+60).toString()+','+(compl.g+40).toString()+','+(compl.b+10).toString()+')'
+var sdb = document.getElementById("SidebarTabButtons").children;
+sdb[0].style.setProperty("background",complD);
+sdb[1].style.setProperty("background",complD);
+sdb[2].style.setProperty("background",complD);
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+var colorE = rgbToHex(compl.r+60,compl.g+40,compl.b+10)
+var complE = 0xffffff ^ colorE;
+sdb[0].style.setProperty("color",complE);
+sdb[1].style.setProperty("color",complE);
+sdb[2].style.setProperty("color",complE);
+function invertColor(hex) {
+    if (hex.indexOf('#') === 0) {
+        hex = hex.slice(1);
+    }
+    // convert 3-digit hex to 6-digits.
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) {
+        throw new Error('Invalid HEX color.');
+    }
+    // invert color components
+    var r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
+        g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
+        b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
+    // pad each with zeros and return
+    return '#' + padZero(r) + padZero(g) + padZero(b);
+}
+
+function padZero(str, len) {
+    len = len || 2;
+    var zeros = new Array(len).join('0');
+    return (zeros + str).slice(-len);
+}
+document.getElementById("ChatLog").style.setProperty("color",invertColor(rgbToHex(compl.r,compl.g,compl.b)));
+
+complC = 'rgb('+(compl.r-50).toString()+','+(compl.g-70).toString()+','+(compl.b-115).toString()+')'
+document.getElementById("ChatInputBox").style.setProperty("background",complC);
+document.getElementById("ChatInputBox").style.setProperty("color",invertColor(rgbToHex(compl.r,compl.g,compl.b)));
+
+var appD = document.getElementById("App").children[0].children
+appD[0].style.setProperty('color',invertColor(colorB))
+appD[1].style.setProperty('color',invertColor(colorB))
+appD[2].style.setProperty('color',invertColor(colorB))
+appD[3].style.setProperty('color',invertColor(colorB))
+     document.getElementById("GameCanvas").style.setProperty("background","#"+colorB);
+        } else {
      var bgLink = "url("+document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value+")";
      document.getElementById("GameCanvas").style.setProperty("background",bgLink);
+        }
      console.log("Changement du fond d'écran : "+document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value);
      document.getElementById('SettingsTab').children[1].children[0].children[2].children[1].value = "";
  }
